@@ -6,8 +6,8 @@ public class Player : MonoBehaviour
 {
     private Vector2 lastLogicPos;
     public GridMap map;
-    [HideInInspector]
-    public GameObject underCreatingBuilding;
+    private GameObject buildingObj;
+    private BuildingBase building;
 
     private void Awake()
     {
@@ -25,12 +25,13 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        //return;
         Ray ray = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
         RaycastHit hit;
         if(Physics.Raycast(ray,out hit,Mathf.Infinity, 1 << LayerMask.NameToLayer("Ground")))
         {
             Vector3 hitPoint = hit.point;
-            if (underCreatingBuilding != null)
+            if (buildingObj != null)
             {
                 Vector2 mouseLogicPos = map.WorldPos2LogicPos(hitPoint.x, hitPoint.z);
                 if (lastLogicPos == default(Vector2) || mouseLogicPos != lastLogicPos)
@@ -38,7 +39,7 @@ public class Player : MonoBehaviour
                     lastLogicPos = mouseLogicPos;
                     Vector2 snappedPos = map.LogicPos2WorldPos(mouseLogicPos);
 
-                    underCreatingBuilding.transform.position = new Vector3(snappedPos.x, 0, snappedPos.y);
+                    building.SetPosition(new Vector3(snappedPos.x, 0, snappedPos.y));
                     map.RefreshRegionSnippets(mouseLogicPos);
                 }
 
@@ -63,21 +64,26 @@ public class Player : MonoBehaviour
         {
             return;
         }
-        if(underCreatingBuilding != null)
+        if(buildingObj != null)
         {
             return;
         }
-        underCreatingBuilding = Instantiate(cfg.prefab,new Vector3(0,0,0),Quaternion.identity);
-        BuildingHelper.SetBuildingAlpha(underCreatingBuilding, 0.2f);
-        BuildingHelper.SetBuildingLayer(underCreatingBuilding,"BuildingFollow");
-        map.CreateRegionSnippets(underCreatingBuilding);
+        buildingObj = Instantiate(cfg.prefab,new Vector3(10.5f,0,10.3f),Quaternion.identity);
+
+        building = buildingObj.GetComponent<BuildingBase>();
+        building.offset = building.transform.position - map.World2SnappedPos(building.transform.position);
+
+        buildingObj.SetAlphaRecursively(0.2f);
+        buildingObj.SetLayerRecursively("BuildingFollow");
+        map.CreateRegionSnippets(building);
     }
 
     private void BuildComplete() 
     {
-        BuildingHelper.SetBuildingAlpha(underCreatingBuilding, 1.0f);
-        BuildingHelper.SetBuildingLayer(underCreatingBuilding, "Default");
-        underCreatingBuilding = null;
+        buildingObj.SetAlphaRecursively(1.0f);
+        buildingObj.SetLayerRecursively("Default");
+        buildingObj = null;
+        building = null;
         map.ClearRegionSnippets();
     }
 }

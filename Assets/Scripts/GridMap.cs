@@ -7,7 +7,7 @@ public class GridMap : MonoBehaviour
 {
     //瓦片大小
     public Vector2 TileSize = new Vector2(0.8f, 0.8f);
-    public Vector2 TileAmount = new Vector2(100 , 100);
+    public Vector2 TileAmount = new Vector2(100, 100);
 
     //public Vector2 TileSize = new Vector2(1.0f, 1.0f);
     //public Vector2 TileAmount = new Vector2(60, 60);
@@ -37,13 +37,9 @@ public class GridMap : MonoBehaviour
         Debug.Log("初始化Tile");
     }
 
-    public void CreateRegionSnippets(GameObject building)
+    public void CreateRegionSnippets(BuildingBase building)
     {
         Rect colRect = BuildingHelper.MakeRectOfCollider(building.GetComponentInChildren<Collider>());
-        Vector3 offset = World2SnappedPos(building.transform.position) - building.transform.position;
-        Vector2 rectPos = new Vector2(colRect.position.x + offset.x, colRect.position.y + offset.z);
-        colRect.position = rectPos;
-
         Vector2 buildingFootPoint = WorldPos2LogicPos(building.transform.position.x, building.transform.position.z);
 
         float fromX = colRect.position.x;
@@ -69,13 +65,13 @@ public class GridMap : MonoBehaviour
                 snippet = Instantiate(regionSnippetPrefab);
                 snippet.transform.localScale = new Vector3(TileSize.x, TileSize.y, 1);
 
-                BuildingHelper.SetBuildingLayer(snippet, "BuildingFollow");
+                snippet.gameObject.SetLayerRecursively("BuildingFollow");
                 snappedPos = LogicPos2WorldPos((int)x, (int)y);
 
                 snippetInfo = snippet.GetComponent<RegionSnippetInfo>();
-                snippetInfo.relativePos = new Vector2(x - buildingFootPoint.x, y - buildingFootPoint.y);//相对于脚点偏移
+                snippetInfo.relativePos = new Vector2(x - buildingFootPoint.x, y - buildingFootPoint.y);//相对于脚点的相对坐标
 
-                snippet.transform.position = new Vector3(snappedPos.x - offset.x, 0.1f, snappedPos.y - offset.z);
+                snippet.transform.position = new Vector3(snappedPos.x, -0.1f, snappedPos.y);
                 regionSnippetsList.Add(snippetInfo);
             }
         }
@@ -109,7 +105,7 @@ public class GridMap : MonoBehaviour
             //Debug.Log($"RefreshRegionSnippets {tilePos} canBuild {tile.canBuild}}");
 
             snippetInfo.SetCanBuild(tile.canBuild);
-            snippetInfo.transform.position = new Vector3(tile.x, 0.1f, tile.y);
+            snippetInfo.transform.position = new Vector3(tile.x, 0, tile.y);
             snippetInfo.logicPos = tilePos;
         }
     }

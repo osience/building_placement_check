@@ -462,9 +462,6 @@ MonoBehaviour:
   TileAmount: {x: 100, y: 100}
   regionSnippetPrefab: {fileID: 856605079242616560, guid: 7eb1cbeb434a3c645b6fd844e1242608,
     type: 3}
-  legalColor: {r: 0.039215688, g: 0.14509805, b: 0.011764706, a: 0.2}
-  illegalColor: {r: 0.3019608, g: 0.023529412, b: 0, a: 0.2}
-  canBuild: 0
   regionSnippetsList: []
 --- !u!1 &231055293
 GameObject:
@@ -752,7 +749,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   map: {fileID: 214827762}
-  underCreatingBuilding: {fileID: 0}
 --- !u!1 &588767008
 GameObject:
   m_ObjectHideFlags: 0

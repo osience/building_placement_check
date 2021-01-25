@@ -92,8 +92,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d52c245a8019d654592fff237d063df2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  legalRegionColor: {r: 0, g: 0.2924528, b: 0.050422907, a: 0.5686275}
-  illegalRegionColor: {r: 0.6509434, g: 0.12588999, b: 0.12588999, a: 0.6117647}
+  legalRegionColor: {r: 0.023529412, g: 0.32156864, b: 0, a: 0.45490196}
+  illegalRegionColor: {r: 1, g: 0, b: 0, a: 0.4627451}
   canBuild: 0
   logicPos: {x: 0, y: 0}
   relativePos: {x: 0, y: 0}

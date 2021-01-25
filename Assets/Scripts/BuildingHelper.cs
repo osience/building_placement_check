@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuildingHelper 
+public static class BuildingHelper 
 {
-    public static void SetBuildingAlpha(GameObject building,float alpha)
+    public static void SetAlphaRecursively(this GameObject go,float alpha)
     {
         //return;
-        Renderer[]  renders = building.GetComponentsInChildren<Renderer>();
+        Renderer[]  renders = go.GetComponentsInChildren<Renderer>();
         foreach (var render in renders)
         {
             Color color = render.material.color;
@@ -16,9 +16,18 @@ public class BuildingHelper
         }
     }
 
-    public static void SetBuildingLayer(GameObject building,string layerName)
+    //public static void SetBuildingLayer(GameObject building,string layerName)
+    //{
+    //    building.layer = LayerMask.NameToLayer(layerName);
+    //}
+
+    public static void SetLayerRecursively(this GameObject go, string layerName)
     {
-        building.layer = LayerMask.NameToLayer(layerName);
+        Transform[] tranforms = go.GetComponentsInChildren<Transform>();
+        foreach (Transform transform in tranforms)
+        {
+            transform.gameObject.layer = LayerMask.NameToLayer(layerName);
+        }
     }
 
     public static Rect MakeRectOfCollider(Collider col)

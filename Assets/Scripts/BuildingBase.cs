@@ -5,7 +5,15 @@ using UnityEngine;
 public delegate void BuildCompleteHandler();
 public class BuildingBase : MonoBehaviour
 {
-    public List<GameObject> regionSnippets;
+
+    [HideInInspector]
+    public Vector3 offset; //建筑与格子坐标的偏移
+
+    public void SetPosition(Vector3 position)
+    {
+        this.transform.position = position + offset;
+    }
+    //public List<GameObject> regionSnippets;
     //void Start()
     //{
         

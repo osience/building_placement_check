@@ -10,7 +10,7 @@ public class RegionSnippetInfo : MonoBehaviour
     [HideInInspector]
     public bool canBuild;
 
-    [HideInInspector]
+    //[HideInInspector]
     public Vector2 logicPos;
 
     //相对于建筑脚点的坐标
